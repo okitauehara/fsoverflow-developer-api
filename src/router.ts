@@ -1,11 +1,8 @@
-import { Request, Response, Router } from 'express';
+import { Router } from 'express';
+import questionRouter from './routers/questionsRouter';
 
 const router = Router();
 
-router.get('/status', (req: Request, res: Response) => {
-  res.send({
-    message: 'Server is working!',
-  });
-});
+router.use('/questions', questionRouter);
 
 export default router;
