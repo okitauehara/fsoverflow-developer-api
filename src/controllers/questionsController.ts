@@ -1,10 +1,10 @@
-import { Response, Request } from 'express';
+import { Response, Request, NextFunction } from 'express';
 import { QuestionBody } from '../interfaces/questionsInterface';
 import * as questionsService from '../services/questionsService';
 import postQuestionSchema from '../schemas/postQuestionSchema';
 import NotFound from '../errors/NotFound';
 
-async function postQuestion(req: Request, res: Response): Promise<Response<any, Record<string, any>>> {
+async function postQuestion(req: Request, res: Response, next: NextFunction): Promise<Response<any, Record<string, any>>> {
   const questionBody: QuestionBody = req.body;
 
   try {
@@ -17,7 +17,7 @@ async function postQuestion(req: Request, res: Response): Promise<Response<any, 
     });
   } catch (error) {
     if (error instanceof NotFound) return res.status(404).send(error.message);
-    return res.status(500).send(`Error on Questions: Unable to post question - ${error.message}`);
+    next(error);
   }
 }
 
