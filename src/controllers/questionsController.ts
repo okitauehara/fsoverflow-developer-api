@@ -16,7 +16,6 @@ async function postQuestion(req: Request, res: Response): Promise<Response<any, 
       id: result,
     });
   } catch (error) {
-    console.log(error);
     if (error instanceof NotFound) return res.status(404).send(error.message);
     return res.status(500).send(`Error on Questions: Unable to post question - ${error.message}`);
   }

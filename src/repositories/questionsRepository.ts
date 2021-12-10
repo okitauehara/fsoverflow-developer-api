@@ -5,7 +5,7 @@ async function findUserByName(student: string): Promise<number> {
   const result = await connection.query(`
     SELECT id FROM users WHERE name = $1
   `, [student]);
-  if (!result) return null;
+  if (!result.rowCount) return null;
   return result.rows[0].id;
 }
 
@@ -13,7 +13,7 @@ async function findClassByName(classname: string): Promise<number> {
   const result = await connection.query(`
     SELECT id FROM classes WHERE class = $1
   `, [classname]);
-  if (!result) return null;
+  if (!result.rowCount) return null;
   return result.rows[0].id;
 }
 
