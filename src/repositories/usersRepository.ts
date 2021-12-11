@@ -33,17 +33,10 @@ async function insert(userBody: UserDB): Promise<string> {
 
 async function findUserByToken(token: string) {
   const result = await connection.query(`
-    SELECT
-      users.id,
-      users.name,
-      users.token,
-      classes.class AS classname
-    FROM users
-    JOIN classes
-      ON users.class_id = classes.id
-    WHERE users.token = $1`, [token]);
+    SELECT id FROM users WHERE token = $1
+  `, [token]);
   if (!result.rowCount) return null;
-  return result.rows[0];
+  return result.rows[0].id;
 }
 
 export {

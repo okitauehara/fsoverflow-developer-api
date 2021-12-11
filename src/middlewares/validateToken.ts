@@ -2,7 +2,6 @@ import { Request, Response, NextFunction } from 'express';
 import * as usersRepository from '../repositories/usersRepository';
 import NotFound from '../errors/NotFound';
 import TokenError from '../errors/TokenError';
-import { User } from '../interfaces/usersInterface';
 
 export default async function validateToken(req: Request, res: Response, next: NextFunction) {
   try {
@@ -13,8 +12,8 @@ export default async function validateToken(req: Request, res: Response, next: N
     const result = await usersRepository.findUserByToken(token);
     if (!result) throw new NotFound('This token does not belong to any registered user');
 
-    const userInfo: User = result;
-    res.locals.userInfo = userInfo;
+    const userId: number = result;
+    res.locals.userId = userId;
     next();
   } catch (err) {
     if (err instanceof TokenError) return res.status(401).send(err.message);
