@@ -5,7 +5,7 @@ import { UserBody } from '../interfaces/usersInterface';
 import * as usersRepository from '../repositories/usersRepository';
 import * as questionsRepository from '../repositories/questionsRepository';
 
-async function create(userBody: UserBody) {
+async function create(userBody: UserBody): Promise<string> {
   const {
     name,
     classname,

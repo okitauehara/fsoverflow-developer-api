@@ -4,7 +4,7 @@ import * as usersService from '../services/usersService';
 import postUserSchema from '../schemas/postUserSchema';
 import Conflict from '../errors/Conflict';
 
-async function postUser(req: Request, res: Response, next: NextFunction) {
+async function postUser(req: Request, res: Response, next: NextFunction): Promise<Response<any, Record<string, any>>> {
   const userBody: UserBody = req.body;
 
   try {

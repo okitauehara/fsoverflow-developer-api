@@ -1,7 +1,7 @@
 import connection from '../connection/database';
 import { UserDB } from '../interfaces/usersInterface';
 
-async function findUser(userBody: UserDB) {
+async function findUser(userBody: UserDB): Promise<boolean> {
   const {
     name,
     classId,
@@ -14,7 +14,7 @@ async function findUser(userBody: UserDB) {
   return true;
 }
 
-async function insert(userBody: UserDB) {
+async function insert(userBody: UserDB): Promise<string> {
   const {
     name,
     classId,
