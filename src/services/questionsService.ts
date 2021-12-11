@@ -25,6 +25,10 @@ async function create(questionBody: QuestionBody): Promise<number> {
   return result;
 }
 
+async function answer() {
+  
+}
+
 export {
   create,
 };

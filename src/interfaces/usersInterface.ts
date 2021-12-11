@@ -14,11 +14,11 @@ interface User {
   id: number;
   name: string;
   token: string;
-  class_id: number;
+  classname: string;
 }
 
 export {
   UserBody,
   UserDB,
-  User
+  User,
 };
