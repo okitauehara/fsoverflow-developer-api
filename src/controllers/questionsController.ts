@@ -23,7 +23,7 @@ async function postQuestion(req: Request, res: Response, next: NextFunction): Pr
   }
 }
 
-async function postAnswer(req: Request, res: Response, next: NextFunction) {
+async function postAnswer(req: Request, res: Response, next: NextFunction): Promise<Response<any, Record<string, any>>> {
   const { userId } = res.locals;
   const questionId = Number(req.params.id);
   const { answer } = req.body;

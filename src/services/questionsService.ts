@@ -26,7 +26,7 @@ async function create(questionBody: QuestionBody): Promise<number> {
   return result;
 }
 
-async function answer(answerData: Answer) {
+async function answer(answerData: Answer): Promise<boolean> {
   const checkQuestion = await questionsRepository.findQuestionById(answerData.questionId);
   if (!checkQuestion) throw new NotFound('Question not found');
   if (checkQuestion.answered) throw new Conflict('Question already answered');
