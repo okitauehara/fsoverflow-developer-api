@@ -21,6 +21,11 @@ async function postQuestion(req: Request, res: Response, next: NextFunction): Pr
   }
 }
 
+async function postAnswer(req: Request, res: Response, next: NextFunction) {
+
+}
+
 export {
   postQuestion,
+  postAnswer,
 };

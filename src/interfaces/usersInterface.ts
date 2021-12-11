@@ -10,7 +10,15 @@ interface UserDB {
   token?: string;
 }
 
+interface User {
+  id: number;
+  name: string;
+  token: string;
+  class_id: number;
+}
+
 export {
   UserBody,
   UserDB,
+  User
 };
