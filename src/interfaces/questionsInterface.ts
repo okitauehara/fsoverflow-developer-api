@@ -7,7 +7,7 @@ interface QuestionBody {
 
 interface QuestionDB {
   question: string;
-  student: number;
+  studentId: number;
   tags: string;
 }
 

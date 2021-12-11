@@ -20,7 +20,7 @@ async function findClassByName(classname: string): Promise<number> {
 async function insert(questionBody: QuestionDB): Promise<number> {
   const {
     question,
-    student,
+    studentId,
     tags,
   } = questionBody;
   const result = await connection.query(`
@@ -29,7 +29,7 @@ async function insert(questionBody: QuestionDB): Promise<number> {
     VALUES
       ($1, $2, $3)
     RETURNING id
-  `, [question, student, tags]);
+  `, [question, studentId, tags]);
   return result.rows[0].id;
 }
 
