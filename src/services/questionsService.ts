@@ -18,7 +18,7 @@ async function create(questionBody: QuestionBody): Promise<number> {
 
   const result = await questionsRepository.insert({
     question,
-    student: getUserId,
+    studentId: getUserId,
     tags,
   });
 

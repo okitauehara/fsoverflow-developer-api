@@ -15,9 +15,9 @@ async function postQuestion(req: Request, res: Response, next: NextFunction): Pr
     return res.status(201).send({
       id: result,
     });
-  } catch (error) {
-    if (error instanceof NotFound) return res.status(404).send(error.message);
-    next(error);
+  } catch (err) {
+    if (err instanceof NotFound) return res.status(404).send(err.message);
+    next(err);
   }
 }
 
