@@ -1,5 +1,5 @@
 import connection from '../connection/database';
-import { Answer, QuestionDB } from '../interfaces/questionsInterface';
+import { Answer, Question, QuestionDB } from '../interfaces/questionsInterface';
 
 async function findUserByName(student: string): Promise<number> {
   const result = await connection.query(`
@@ -33,7 +33,7 @@ async function insert(questionBody: QuestionDB): Promise<number> {
   return result.rows[0].id;
 }
 
-async function findQuestionById(questionId: number) {
+async function findQuestionById(questionId: number): Promise<Question> {
   const result = await connection.query(`
     SELECT * FROM questions WHERE id = $1
   `, [questionId]);
@@ -41,7 +41,7 @@ async function findQuestionById(questionId: number) {
   return result.rows[0];
 }
 
-async function update(answerData: Answer) {
+async function update(answerData: Answer): Promise<boolean> {
   const {
     userId,
     questionId,

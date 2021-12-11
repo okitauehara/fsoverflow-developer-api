@@ -17,8 +17,21 @@ interface Answer {
   answer: string;
 }
 
+interface Question {
+  id: number;
+  question: string;
+  student: number;
+  tags: string;
+  answered: boolean;
+  submitedAt: string;
+  answeredAt?: string;
+  answeredBy?: number;
+  answer?: string;
+}
+
 export {
   QuestionBody,
   QuestionDB,
   Answer,
+  Question,
 };
