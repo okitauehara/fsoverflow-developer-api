@@ -7,7 +7,7 @@ interface UserBody {
 interface UserDB {
   name: string;
   classId: number;
-  token: string;
+  token?: string;
 }
 
 export {

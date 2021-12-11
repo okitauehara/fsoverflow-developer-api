@@ -11,11 +11,14 @@ async function create(userBody: UserBody) {
     classname,
   } = userBody;
 
-  const checkConflict = await usersRepository.findUser(userBody);
-  if (!checkConflict) throw new Conflict('User already registered');
-
   const getClassId = await questionsRepository.findClassByName(classname);
   if (!getClassId) throw new NotFound('The class name does not belong to any registered class');
+
+  const checkConflict = await usersRepository.findUser({
+    name,
+    classId: getClassId,
+  });
+  if (!checkConflict) throw new Conflict('User already registered');
 
   const token: string = uuid();
   const result = await usersRepository.insert({

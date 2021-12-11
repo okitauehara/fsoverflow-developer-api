@@ -1,15 +1,15 @@
 import connection from '../connection/database';
-import { UserBody, UserDB } from '../interfaces/usersInterface';
+import { UserDB } from '../interfaces/usersInterface';
 
-async function findUser(userBody: UserBody) {
+async function findUser(userBody: UserDB) {
   const {
     name,
-    classname,
+    classId,
   } = userBody;
 
   const result = await connection.query(`
-    SELECT * FROM users WHERE name = $1 AND classname = $2 
-  `, [name, classname]);
+    SELECT * FROM users WHERE name = $1 AND class_id = $2 
+  `, [name, classId]);
   if (result.rowCount) return null;
   return true;
 }
