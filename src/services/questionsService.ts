@@ -1,6 +1,7 @@
-import { QuestionBody } from '../interfaces/questionsInterface';
+import { Answer, QuestionBody } from '../interfaces/questionsInterface';
 import * as questionsRepository from '../repositories/questionsRepository';
 import NotFound from '../errors/NotFound';
+import Conflict from '../errors/Conflict';
 
 async function create(questionBody: QuestionBody): Promise<number> {
   const {
@@ -25,6 +26,17 @@ async function create(questionBody: QuestionBody): Promise<number> {
   return result;
 }
 
+async function answer(answerData: Answer) {
+  const checkQuestion = await questionsRepository.findQuestionById(answerData.questionId);
+  if (!checkQuestion) throw new NotFound('Question not found');
+  if (checkQuestion.answered) throw new Conflict('Question already answered');
+
+  const result = await questionsRepository.update(answerData);
+
+  return result;
+}
+
 export {
   create,
+  answer,
 };

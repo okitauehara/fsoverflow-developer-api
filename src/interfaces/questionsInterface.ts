@@ -11,7 +11,14 @@ interface QuestionDB {
   tags: string;
 }
 
+interface Answer {
+  userId: number;
+  questionId: number;
+  answer: string;
+}
+
 export {
   QuestionBody,
   QuestionDB,
+  Answer,
 };
