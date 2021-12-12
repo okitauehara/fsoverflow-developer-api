@@ -51,8 +51,13 @@ async function getQuestions(req: Request, res: Response, next: NextFunction): Pr
   }
 }
 
+async function getQuestionsById(req: Request, res: Response, next: NextFunction) {
+
+}
+
 export {
   postQuestion,
   postAnswer,
   getQuestions,
+  getQuestionsById,
 };
