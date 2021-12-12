@@ -55,8 +55,12 @@ async function update(answerData: Answer): Promise<boolean> {
   return true;
 }
 
-async function findUnansweredQuestions() {
-
+async function findUnansweredQuestions(): Promise<Question[]> {
+  const result = await connection.query(`
+    SELECT * FROM questions WHERE answered = false
+  `);
+  if (result.rowCount) return null;
+  return result.rows;
 }
 
 export {
