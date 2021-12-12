@@ -1,4 +1,4 @@
-import { Answer, Question, QuestionBody } from '../interfaces/questionsInterface';
+import { Answer, UnansweredQuestion, QuestionBody } from '../interfaces/questionsInterface';
 import * as questionsRepository from '../repositories/questionsRepository';
 import NotFound from '../errors/NotFound';
 import Conflict from '../errors/Conflict';
@@ -36,7 +36,7 @@ async function answer(answerData: Answer): Promise<boolean> {
   return result;
 }
 
-async function get(): Promise<Question[]> {
+async function get(): Promise<UnansweredQuestion[]> {
   const result = await questionsRepository.findUnansweredQuestions();
   if (!result) throw new NotFound('Unanswered questions not found');
 

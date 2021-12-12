@@ -29,9 +29,18 @@ interface Question {
   answer?: string;
 }
 
+interface UnansweredQuestion {
+  id: number;
+  question: string;
+  student: string;
+  class: string;
+  submitedAt: string;
+}
+
 export {
   QuestionBody,
   QuestionDB,
   Answer,
   Question,
+  UnansweredQuestion,
 };

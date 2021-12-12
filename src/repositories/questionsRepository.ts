@@ -1,5 +1,7 @@
 import connection from '../connection/database';
-import { Answer, Question, QuestionDB } from '../interfaces/questionsInterface';
+import {
+  Answer, Question, QuestionDB, UnansweredQuestion,
+} from '../interfaces/questionsInterface';
 
 async function findUserByName(student: string): Promise<number> {
   const result = await connection.query(`
@@ -55,11 +57,22 @@ async function update(answerData: Answer): Promise<boolean> {
   return true;
 }
 
-async function findUnansweredQuestions(): Promise<Question[]> {
+async function findUnansweredQuestions(): Promise<UnansweredQuestion[]> {
   const result = await connection.query(`
-    SELECT * FROM questions WHERE answered = false
+    SELECT
+      questions.id,
+      questions.question,
+      users.name AS student,
+      classes.class,
+      questions."submitedAt"
+    FROM questions
+    JOIN users
+      ON questions.student = users.id
+    JOIN classes
+      ON users.class_id = classes.id
+    WHERE answered = false
   `);
-  if (result.rowCount) return null;
+  if (!result.rowCount) return null;
   return result.rows;
 }
 
