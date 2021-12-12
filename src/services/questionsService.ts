@@ -42,7 +42,7 @@ async function get(): Promise<UnansweredQuestionsDB[]> {
   if (!questions) throw new NotFound('Unanswered questions not found');
 
   const result = questions.map((question) => ({
-    ...questions[0],
+    ...question,
     submitedAt: formatDate(question.submitedAt),
   }));
 
