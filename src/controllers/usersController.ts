@@ -3,6 +3,7 @@ import { UserBody } from '../interfaces/usersInterface';
 import * as usersService from '../services/usersService';
 import postUserSchema from '../schemas/postUserSchema';
 import Conflict from '../errors/Conflict';
+import NotFound from '../errors/NotFound';
 
 async function postUser(req: Request, res: Response, next: NextFunction): Promise<Response<any, Record<string, any>>> {
   const userBody: UserBody = req.body;
@@ -16,6 +17,7 @@ async function postUser(req: Request, res: Response, next: NextFunction): Promis
       token: result,
     });
   } catch (err) {
+    if (err instanceof NotFound) return res.status(404).send(err.message);
     if (err instanceof Conflict) return res.status(409).send(err.message);
     next(err);
   }
