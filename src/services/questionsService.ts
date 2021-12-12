@@ -51,6 +51,8 @@ async function get(): Promise<UnansweredQuestionsDB[]> {
 
 async function getById(questionId: number) {
   const status = await questionsRepository.findQuestionById(questionId);
+  if (!status) throw new NotFound('Question not found');
+
   if (status.answered) {
     const answered = await questionsRepository.findAnsweredQuestionById(questionId);
     const result = {
