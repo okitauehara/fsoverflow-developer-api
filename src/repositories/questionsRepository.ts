@@ -1,6 +1,6 @@
 import connection from '../connection/database';
 import {
-  AnswerBody, QuestionDB, QuestionStatusDB, UnansweredQuestionsDB,
+  AnswerBody, AnsweredDB, QuestionDB, QuestionStatusDB, UnansweredDB, UnansweredQuestionsDB,
 } from '../interfaces/questionsInterface';
 
 async function findUserByName(student: string): Promise<number> {
@@ -76,7 +76,7 @@ async function findUnansweredQuestions(): Promise<UnansweredQuestionsDB[]> {
   return result.rows;
 }
 
-async function findAnsweredQuestionById(questionId: number) {
+async function findAnsweredQuestionById(questionId: number): Promise<AnsweredDB> {
   const result = await connection.query(`
     SELECT
       questions.question,
@@ -97,11 +97,10 @@ async function findAnsweredQuestionById(questionId: number) {
       ON questions."answeredBy" = "userWhoReplied".id
     WHERE questions.id = $1
   `, [questionId]);
-  if (!result.rowCount) return null;
   return result.rows[0];
 }
 
-async function findUnansweredQuestionById(questionId: number) {
+async function findUnansweredQuestionById(questionId: number): Promise<UnansweredDB> {
   const result = await connection.query(`
     SELECT
       questions.question,
@@ -117,7 +116,6 @@ async function findUnansweredQuestionById(questionId: number) {
       ON users.class_id = classes.id
     WHERE questions.id = $1
   `, [questionId]);
-  if (!result.rowCount) return null;
   return result.rows[0];
 }
 

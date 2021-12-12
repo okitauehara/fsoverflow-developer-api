@@ -29,10 +29,27 @@ interface QuestionStatusDB {
   answered: boolean;
 }
 
+interface UnansweredDB {
+  question: string;
+  student: string;
+  class: string;
+  tags: string;
+  answered: boolean;
+  submitedAt: string;
+}
+
+interface AnsweredDB extends UnansweredDB {
+  answeredAt: string;
+  answeredBy: string;
+  answer: string;
+}
+
 export {
   QuestionBody,
   QuestionDB,
   AnswerBody,
   UnansweredQuestionsDB,
   QuestionStatusDB,
+  UnansweredDB,
+  AnsweredDB,
 };
