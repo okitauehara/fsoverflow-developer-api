@@ -60,6 +60,7 @@ async function getById(questionId: number) {
     };
     return result;
   }
+
   const result = {
     ...question,
     submitedAt: formatDate(question.submitedAt),

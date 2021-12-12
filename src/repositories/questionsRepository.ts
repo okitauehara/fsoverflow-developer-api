@@ -45,13 +45,15 @@ async function findQuestionById(questionId: number): Promise<Question> {
       questions.answered,
       questions."submitedAt",
       questions."answeredAt",
-      questions."answeredBy",
+      "userWhoReplied".name AS "answeredBy",
       questions.answer
     FROM questions
     JOIN users
       ON questions.student = users.id
     JOIN classes
       ON users.class_id = classes.id
+    JOIN users AS "userWhoReplied"
+      ON questions."answeredBy" = "userWhoReplied".id
     WHERE questions.id = $1
   `, [questionId]);
   if (!result.rowCount) return null;
