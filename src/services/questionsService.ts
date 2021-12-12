@@ -37,7 +37,10 @@ async function answer(answerData: Answer): Promise<boolean> {
 }
 
 async function get() {
+  const result = await questionsRepository.findUnansweredQuestions();
+  if (!result) throw new NotFound('Unanswered questions not found');
 
+  return result;
 }
 
 export {

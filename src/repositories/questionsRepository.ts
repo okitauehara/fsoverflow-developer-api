@@ -55,10 +55,15 @@ async function update(answerData: Answer): Promise<boolean> {
   return true;
 }
 
+async function findUnansweredQuestions() {
+
+}
+
 export {
   findUserByName,
   findClassByName,
   insert,
   findQuestionById,
   update,
+  findUnansweredQuestions,
 };
