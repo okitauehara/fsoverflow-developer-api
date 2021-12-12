@@ -52,8 +52,13 @@ async function get(): Promise<UnansweredQuestion[]> {
   return result;
 }
 
+async function getById(questionId: number) {
+
+}
+
 export {
   create,
   answer,
   get,
+  getById,
 };
