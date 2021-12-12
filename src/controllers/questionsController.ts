@@ -41,7 +41,18 @@ async function postAnswer(req: Request, res: Response, next: NextFunction): Prom
   }
 }
 
+async function getQuestions(req: Request, res: Response, next: NextFunction): Promise<Response<any, Record<string, any>>> {
+  try {
+    const questions = await questionsService.get();
+    return res.status(200).send(questions);
+  } catch (err) {
+    if (err instanceof NotFound) return res.status(404).send(err.message);
+    next(err);
+  }
+}
+
 export {
   postQuestion,
   postAnswer,
+  getQuestions,
 };

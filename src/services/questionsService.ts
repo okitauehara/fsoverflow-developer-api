@@ -1,7 +1,8 @@
-import { Answer, QuestionBody } from '../interfaces/questionsInterface';
+import { Answer, UnansweredQuestion, QuestionBody } from '../interfaces/questionsInterface';
 import * as questionsRepository from '../repositories/questionsRepository';
 import NotFound from '../errors/NotFound';
 import Conflict from '../errors/Conflict';
+import formatDate from '../utils/formatDate';
 
 async function create(questionBody: QuestionBody): Promise<number> {
   const {
@@ -36,7 +37,23 @@ async function answer(answerData: Answer): Promise<boolean> {
   return result;
 }
 
+async function get(): Promise<UnansweredQuestion[]> {
+  const questions = await questionsRepository.findUnansweredQuestions();
+  if (!questions) throw new NotFound('Unanswered questions not found');
+
+  const result = questions.map((question) => ({
+    id: question.id,
+    question: question.question,
+    student: question.student,
+    class: question.class,
+    submitedAt: formatDate(question.submitedAt),
+  }));
+
+  return result;
+}
+
 export {
   create,
   answer,
+  get,
 };
