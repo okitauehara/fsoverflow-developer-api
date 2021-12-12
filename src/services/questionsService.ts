@@ -36,7 +36,12 @@ async function answer(answerData: Answer): Promise<boolean> {
   return result;
 }
 
+async function get() {
+
+}
+
 export {
   create,
   answer,
+  get,
 };
