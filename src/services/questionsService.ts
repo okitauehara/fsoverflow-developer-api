@@ -1,4 +1,4 @@
-import { Answer, UnansweredQuestion, QuestionBody } from '../interfaces/questionsInterface';
+import { AnswerBody, UnansweredQuestionsDB, QuestionBody } from '../interfaces/questionsInterface';
 import * as questionsRepository from '../repositories/questionsRepository';
 import NotFound from '../errors/NotFound';
 import Conflict from '../errors/Conflict';
@@ -27,7 +27,7 @@ async function create(questionBody: QuestionBody): Promise<number> {
   return result;
 }
 
-async function answer(answerData: Answer): Promise<boolean> {
+async function answer(answerData: AnswerBody): Promise<boolean> {
   const checkQuestion = await questionsRepository.findQuestionById(answerData.questionId);
   if (!checkQuestion) throw new NotFound('Question not found');
   if (checkQuestion.answered) throw new Conflict('Question already answered');
@@ -37,18 +37,36 @@ async function answer(answerData: Answer): Promise<boolean> {
   return result;
 }
 
-async function get(): Promise<UnansweredQuestion[]> {
+async function get(): Promise<UnansweredQuestionsDB[]> {
   const questions = await questionsRepository.findUnansweredQuestions();
   if (!questions) throw new NotFound('Unanswered questions not found');
 
   const result = questions.map((question) => ({
-    id: question.id,
-    question: question.question,
-    student: question.student,
-    class: question.class,
+    ...questions[0],
     submitedAt: formatDate(question.submitedAt),
   }));
 
+  return result;
+}
+
+async function getById(questionId: number) {
+  const status = await questionsRepository.findQuestionById(questionId);
+  if (!status) throw new NotFound('Question not found');
+
+  if (status.answered) {
+    const answered = await questionsRepository.findAnsweredQuestionById(questionId);
+    const result = {
+      ...answered,
+      submitedAt: formatDate(answered.submitedAt),
+      answeredAt: formatDate(answered.answeredAt),
+    };
+    return result;
+  }
+  const unanswered = await questionsRepository.findUnansweredQuestionById(questionId);
+  const result = {
+    ...unanswered,
+    submitedAt: formatDate(unanswered.submitedAt),
+  };
   return result;
 }
 
@@ -56,4 +74,5 @@ export {
   create,
   answer,
   get,
+  getById,
 };

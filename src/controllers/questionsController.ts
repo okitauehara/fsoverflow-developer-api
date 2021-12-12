@@ -51,8 +51,21 @@ async function getQuestions(req: Request, res: Response, next: NextFunction): Pr
   }
 }
 
+async function getQuestionsById(req: Request, res: Response, next: NextFunction) {
+  const questionId = Number(req.params.id);
+
+  try {
+    const question = await questionsService.getById(questionId);
+    return res.status(200).send(question);
+  } catch (err) {
+    if (err instanceof NotFound) return res.status(404).send(err.message);
+    next(err);
+  }
+}
+
 export {
   postQuestion,
   postAnswer,
   getQuestions,
+  getQuestionsById,
 };

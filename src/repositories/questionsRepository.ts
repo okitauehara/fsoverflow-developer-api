@@ -1,6 +1,6 @@
 import connection from '../connection/database';
 import {
-  Answer, Question, QuestionDB, UnansweredQuestion,
+  AnswerBody, AnsweredDB, QuestionDB, QuestionStatusDB, UnansweredDB, UnansweredQuestionsDB,
 } from '../interfaces/questionsInterface';
 
 async function findUserByName(student: string): Promise<number> {
@@ -35,15 +35,15 @@ async function insert(questionBody: QuestionDB): Promise<number> {
   return result.rows[0].id;
 }
 
-async function findQuestionById(questionId: number): Promise<Question> {
+async function findQuestionById(questionId: number): Promise<QuestionStatusDB> {
   const result = await connection.query(`
-    SELECT * FROM questions WHERE id = $1
+    SELECT answered FROM questions WHERE id = $1
   `, [questionId]);
   if (!result.rowCount) return null;
   return result.rows[0];
 }
 
-async function update(answerData: Answer): Promise<boolean> {
+async function update(answerData: AnswerBody): Promise<boolean> {
   const {
     userId,
     questionId,
@@ -57,7 +57,7 @@ async function update(answerData: Answer): Promise<boolean> {
   return true;
 }
 
-async function findUnansweredQuestions(): Promise<UnansweredQuestion[]> {
+async function findUnansweredQuestions(): Promise<UnansweredQuestionsDB[]> {
   const result = await connection.query(`
     SELECT
       questions.id,
@@ -76,6 +76,49 @@ async function findUnansweredQuestions(): Promise<UnansweredQuestion[]> {
   return result.rows;
 }
 
+async function findAnsweredQuestionById(questionId: number): Promise<AnsweredDB> {
+  const result = await connection.query(`
+    SELECT
+      questions.question,
+      users.name AS student,
+      classes.class,
+      questions.tags,
+      questions.answered,
+      questions."submitedAt",
+      questions."answeredAt",
+      "userWhoReplied".name AS "answeredBy",
+      questions.answer
+    FROM questions
+    JOIN users
+      ON questions.student = users.id
+    JOIN classes
+      ON users.class_id = classes.id
+    JOIN users AS "userWhoReplied"
+      ON questions."answeredBy" = "userWhoReplied".id
+    WHERE questions.id = $1
+  `, [questionId]);
+  return result.rows[0];
+}
+
+async function findUnansweredQuestionById(questionId: number): Promise<UnansweredDB> {
+  const result = await connection.query(`
+    SELECT
+      questions.question,
+      users.name AS student,
+      classes.class,
+      questions.tags,
+      questions.answered,
+      questions."submitedAt"
+    FROM questions
+    JOIN users
+      ON questions.student = users.id
+    JOIN classes
+      ON users.class_id = classes.id
+    WHERE questions.id = $1
+  `, [questionId]);
+  return result.rows[0];
+}
+
 export {
   findUserByName,
   findClassByName,
@@ -83,4 +126,6 @@ export {
   findQuestionById,
   update,
   findUnansweredQuestions,
+  findAnsweredQuestionById,
+  findUnansweredQuestionById,
 };

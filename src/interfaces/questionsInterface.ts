@@ -5,31 +5,19 @@ interface QuestionBody {
   tags: string;
 }
 
+interface AnswerBody {
+  userId: number;
+  questionId: number;
+  answer: string;
+}
+
 interface QuestionDB {
   question: string;
   studentId: number;
   tags: string;
 }
 
-interface Answer {
-  userId: number;
-  questionId: number;
-  answer: string;
-}
-
-interface Question {
-  id: number;
-  question: string;
-  student: number;
-  tags: string;
-  answered: boolean;
-  submitedAt: string;
-  answeredAt?: string;
-  answeredBy?: number;
-  answer?: string;
-}
-
-interface UnansweredQuestion {
+interface UnansweredQuestionsDB {
   id: number;
   question: string;
   student: string;
@@ -37,10 +25,31 @@ interface UnansweredQuestion {
   submitedAt: string;
 }
 
+interface QuestionStatusDB {
+  answered: boolean;
+}
+
+interface UnansweredDB {
+  question: string;
+  student: string;
+  class: string;
+  tags: string;
+  answered: boolean;
+  submitedAt: string;
+}
+
+interface AnsweredDB extends UnansweredDB {
+  answeredAt: string;
+  answeredBy: string;
+  answer: string;
+}
+
 export {
   QuestionBody,
   QuestionDB,
-  Answer,
-  Question,
-  UnansweredQuestion,
+  AnswerBody,
+  UnansweredQuestionsDB,
+  QuestionStatusDB,
+  UnansweredDB,
+  AnsweredDB,
 };
