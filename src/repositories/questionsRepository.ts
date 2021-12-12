@@ -109,7 +109,7 @@ async function findUnansweredQuestionById(questionId: number) {
       classes.class,
       questions.tags,
       questions.answered,
-      questions."submitedAt",
+      questions."submitedAt"
     FROM questions
     JOIN users
       ON questions.student = users.id
