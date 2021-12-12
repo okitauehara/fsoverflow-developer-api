@@ -37,7 +37,22 @@ async function insert(questionBody: QuestionDB): Promise<number> {
 
 async function findQuestionById(questionId: number): Promise<Question> {
   const result = await connection.query(`
-    SELECT * FROM questions WHERE id = $1
+    SELECT
+      questions.question,
+      users.name AS student,
+      classes.class,
+      questions.tags,
+      questions.answered,
+      questions."submitedAt",
+      questions."answeredAt",
+      questions."answeredBy",
+      questions.answer
+    FROM questions
+    JOIN users
+      ON questions.student = users.id
+    JOIN classes
+      ON users.class_id = classes.id
+    WHERE questions.id = $1
   `, [questionId]);
   if (!result.rowCount) return null;
   return result.rows[0];

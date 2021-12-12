@@ -42,10 +42,7 @@ async function get(): Promise<UnansweredQuestion[]> {
   if (!questions) throw new NotFound('Unanswered questions not found');
 
   const result = questions.map((question) => ({
-    id: question.id,
-    question: question.question,
-    student: question.student,
-    class: question.class,
+    ...questions[0],
     submitedAt: formatDate(question.submitedAt),
   }));
 
@@ -53,7 +50,26 @@ async function get(): Promise<UnansweredQuestion[]> {
 }
 
 async function getById(questionId: number) {
+  const question = await questionsRepository.findQuestionById(questionId);
 
+  if (question.answered) {
+    const result = {
+      ...question,
+      submitedAt: formatDate(question.submitedAt),
+      answeredAt: formatDate(question.answeredAt),
+    };
+    return result;
+  }
+  const result = {
+    ...question,
+    submitedAt: formatDate(question.submitedAt),
+  };
+
+  delete result.answeredAt;
+  delete result.answeredBy;
+  delete result.answer;
+
+  return result;
 }
 
 export {

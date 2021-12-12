@@ -18,9 +18,9 @@ interface Answer {
 }
 
 interface Question {
-  id: number;
   question: string;
-  student: number;
+  student: string;
+  class: string;
   tags: string;
   answered: boolean;
   submitedAt: string;
